@@ -2,7 +2,7 @@
 	"name": "Snapp",
 	"version": "1.0",
 	"description": "Take a snapshot, save it and seeded",
-	"permissions": ["declarativeContent", "storage"],
+	"permissions": ["declarativeContent", "storage", "activeTab"],
 	"background": {
 		"scripts": ["src/background.js"],
 		"persistent": false
