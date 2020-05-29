@@ -1,0 +1,14 @@
+{
+	"name": "Snapp",
+	"version": "1.0",
+	"description": "Take a snapshot, save it and seeded",
+	"permissions": ["declarativeContent", "storage"],
+	"background": {
+		"scripts": ["src/background.js"],
+		"persistent": false
+	},
+	"page_action": {
+		"default_popup": "src/popup.html"
+	},
+	"manifest_version": 2
+}

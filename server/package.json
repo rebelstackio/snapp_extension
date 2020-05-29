@@ -1,0 +1,13 @@
+{
+	"name": "snapp_server",
+	"version": "1.0.0",
+	"description": "take a snapshot of a site",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"puppeteer": "^3.1.0"
+	}
+}

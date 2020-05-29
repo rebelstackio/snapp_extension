@@ -1,0 +1,20 @@
+{
+	"name": "snapp_extension",
+	"version": "1.0.0",
+	"description": "take a snapshot of a site",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "npx webpack --config webpack.config.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rebelstackio/snapp_extension.git"
+	},
+	"author": "",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/rebelstackio/snapp_extension/issues"
+	},
+	"homepage": "https://github.com/rebelstackio/snapp_extension#readme"
+}
