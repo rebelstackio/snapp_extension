@@ -1,0 +1,27 @@
+[
+	{
+		"$schema": "http://json-schema.org/draft-07/schema#",
+		"$id": "capture",
+		"type": "object",
+		"properties": {
+			"body": {
+				"type": "object",
+				"properties": {
+					"url": {
+						"title": "URL to take a snappshot",
+						"type": "string",
+						"format": "url"
+					},
+					"opts": {
+						"title": "Options",
+						"type": "object"
+					}
+				},
+				"required": ["url"]
+			}
+		},
+		"required": [
+			"body"
+		]
+	}
+]
