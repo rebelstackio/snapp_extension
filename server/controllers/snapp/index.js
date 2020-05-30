@@ -29,12 +29,16 @@ const capture = function capture(req, res) {
 };
 
 async function takeScreenShot(url, callback) {
-	const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-	const page = await browser.newPage();
-	await page.goto(url);
-	const screenshot =  await page.screenshot();
-	await browser.close();
-	callback(false, screenshot)
+	try {
+		const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+		const page = await browser.newPage();
+		await page.goto(url);
+		const screenshot =  await page.screenshot({fullPage: true});
+		await browser.close();
+		callback(false, screenshot)
+	} catch (error) {
+		callback(error);
+	}
 }
 
 module.exports = {

@@ -1,40 +1,41 @@
 {
-  "name": "yakchat-auth-server",
-  "version": "1.0.0",
-  "description": "Authentication and Authorization REST Server for yakchat",
-  "main": "index.js",
-  "scripts": {
-    "start": "NODE_PATH=. node index.js",
-    "debug": "NODE_PATH=. node --inspect-brk=0.0.0.0:9229 server.js",
-    "test": "nyc --reporter=lcov --reporter=text-lcov ./node_modules/.bin/mocha test",
-    "coverage": "nyc report"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rebelstackio/yakchat-auth-server.git"
-  },
-  "keywords": [
-    "rest",
-    "yakchat",
-    "auth"
-  ],
-  "author": "jegj57@gmail.com+",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rebelstackio/yakchat-auth-server/issues"
-  },
-  "homepage": "https://github.com/rebelstackio/yakchat-auth-server#readme",
-  "dependencies": {
-    "@rebelstack-io/expressif": "^3.1.3-beta",
-    "app-module-path": "^2.2.0",
-    "dotenv": "^8.0.0",
-    "puppeteer": "^3.2.0"
-  },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.1",
-    "sinon": "^7.3.2",
-    "sinon-chai": "^3.3.0"
-  }
+	"name": "snapp_server",
+	"version": "1.0.0",
+	"description": "Take snapshots with puppeteer",
+	"main": "index.js",
+	"scripts": {
+		"start": "NODE_PATH=. node index.js",
+		"debug": "NODE_PATH=. node --inspect-brk=0.0.0.0:9229 server.js",
+		"test": "nyc --reporter=lcov --reporter=text-lcov ./node_modules/.bin/mocha test",
+		"coverage": "nyc report"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rebelstackio/snapp_extension.git"
+	},
+	"keywords": [
+		"rest",
+		"snapp",
+		"capture",
+		"screenshot"
+	],
+	"author": "osmareyesst@gmail.com",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/rebelstackio/snapp_extension/issues"
+	},
+	"homepage": "https://github.com/rebelstackio/snapp_extension#readme",
+	"dependencies": {
+		"@rebelstack-io/expressif": "^3.4.2",
+		"app-module-path": "^2.2.0",
+		"dotenv": "^8.2.0",
+		"puppeteer": "^3.2.0"
+	},
+	"devDependencies": {
+		"chai": "^4.2.0",
+		"mocha": "^7.2.0",
+		"nyc": "^15.0.1",
+		"sinon": "^9.0.2",
+		"sinon-chai": "^3.5.0"
+	}
 }
