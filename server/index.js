@@ -13,7 +13,9 @@ const server = new E.Server(
 		"port": process.env.PORT,
 		"routers":[
 			{ "relpath": "routers" }
-		]
+		],
+		"Access-Control-Allow-Origin": '*',
+		"Allow-Headers": 'Content-Type'
 	}
 );
 const auth = new E.Auth(process.env.JWT_SECRET);
