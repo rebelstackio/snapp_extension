@@ -1,0 +1,81 @@
+/*Font lato*/
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+	font-family: 'Lato', sans-serif;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.action-wrapper {
+	padding: 10px;
+	display: grid;
+	text-align: center;
+	border: 1px solid #1890ff;
+	width: 120px;
+	background-color: ghostwhite;
+}
+
+.action-wrapper > h2 {
+	color: #1890ff;
+}
+
+.action-btn {
+	padding: 5px 10px;
+	outline: none;
+	cursor: pointer;
+	border: 1px solid #666666;
+	border-radius: 4px;
+	background-color: #ffffff;
+	color: #666666;
+	height: 45px;
+	width: 100%;
+	transition: all .3s ease-in-out;
+}
+
+.action-btn:hover {
+	color: #40a9ff;
+	border-color: #40a9ff;
+}
+
+.action-btn.loading {
+	font-size: 42px;
+	color: white;
+	border-color: #666666;
+	cursor: wait;
+	background-color: #d3d3d3;
+	position: relative;
+}
+
+.loading:after {
+	content: ' .';
+	animation: dots 1s steps(5, end) infinite;
+	position: absolute;
+	top: -12px;
+	left: 47px;
+}
+
+@keyframes dots {
+	0%, 20% {
+		color: rgba(0,0,0,0);
+		text-shadow:
+		.25em 0 0 rgba(0,0,0,0),
+		.5em 0 0 rgba(0,0,0,0);}
+	40% {
+		color: white;
+		text-shadow:
+		.25em 0 0 rgba(0,0,0,0),
+		.5em 0 0 rgba(0,0,0,0);}
+	60% {
+		text-shadow:
+		.25em 0 0 white,
+		.5em 0 0 rgba(0,0,0,0);}
+	80%, 100% {
+		text-shadow:
+		.25em 0 0 white,
+		.5em 0 0 white;
+	}
+}
