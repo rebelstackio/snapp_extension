@@ -7,7 +7,8 @@
 		"storage",
 		"activeTab",
 		"http://localhost:8888/",
-		"downloads"
+		"downloads",
+		{"fileSystem": ["write", "retainEntries", "directory"]}
 	],
 	"background": {
 		"scripts": ["src/background.js"],
@@ -16,5 +17,6 @@
 	"page_action": {
 		"default_popup": "src/popup.html"
 	},
+	"content_security_policy":"script-src 'self' https://apis.google.com; object-src 'self'",
 	"manifest_version": 2
 }

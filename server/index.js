@@ -5,6 +5,7 @@ require('app-module-path').addPath(__dirname);
 const pjson = require('./package.json');
 
 global.E = require('@rebelstack-io/expressif');
+global._baseDir = __dirname;
 // global.db = new E.DB();
 global.LOGGER = new E.BasicLogger();
 
@@ -13,9 +14,7 @@ const server = new E.Server(
 		"port": process.env.PORT,
 		"routers":[
 			{ "relpath": "routers" }
-		],
-		"Access-Control-Allow-Origin": '*',
-		"Allow-Headers": 'Content-Type'
+		]
 	}
 );
 const auth = new E.Auth(process.env.JWT_SECRET);

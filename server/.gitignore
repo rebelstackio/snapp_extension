@@ -41,3 +41,6 @@ node_modules/
 
 # Vagrant
 .vagrant
+
+# temp img storage
+snapps

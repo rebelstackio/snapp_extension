@@ -29,7 +29,8 @@
 		"@rebelstack-io/expressif": "^3.4.2",
 		"app-module-path": "^2.2.0",
 		"dotenv": "^8.2.0",
-		"puppeteer": "^3.2.0"
+		"puppeteer": "^3.2.0",
+		"webtorrent-hybrid": "^4.0.1"
 	},
 	"devDependencies": {
 		"chai": "^4.2.0",

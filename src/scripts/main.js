@@ -9,24 +9,35 @@ const ActionBTN = Button({
 	}
 }, 'Capture');
 
+function Input(props = {}, content = false) {
+	if (content) props.content = content;
+	return HTMLElementCreator('input', props)
+}
+
 ActionBTN.onStoreEvent('ON_LOADING', (state, el) => {
 	el.setAttributes({disabled: ''})
 	el.classList.add('loading');
 	el.innerHTML = ''
-})
+});
 
 ActionBTN.onStoreEvent('OFF_LOADING', (state, el) => {
 	el.removeAttribute('disabled')
 	el.innerHTML = 'Capture';
 	el.classList.remove('loading');
-})
+});
+
+const OPTS = Div({className: 'opt-box'},[
+	Label({attributes: {for: 'secs'}}, 'Wait Time in Secconds'),
+	Input({attributes: {name: 'secs', placeholder: 'secs', value: '0'}})
+])
 
 document.addEventListener('DOMContentLoaded', () => {
 	console.log('excuted');
 	const wrapper = document.querySelector('#main-content');
 	wrapper.Div({className: 'action-wrapper'},[
 		H2({}, 'Snapp'),
-		ActionBTN
+		ActionBTN,
+		OPTS
 	])
 })
 
@@ -50,7 +61,10 @@ async function takeCapture(url, options = false) {
 		const _img = await _f.blob()
 		const outside = URL.createObjectURL(_img)
 		const _d = new Date().toDateString();
-		chrome.downloads.download({ url: outside, filename: _d+"-snapp.capture.png" });
+		chrome.downloads.download({
+			url: outside,
+			filename: "snapp_downloads/"+_d+"-snapp.capture.png"
+		});
 		URL.revokeObjectURL(url);
 		window.storage.dispatch({type: 'OFF_LOADING'})
 	} catch (error) {
