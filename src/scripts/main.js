@@ -58,6 +58,27 @@ async function takeCapture(url, options = false) {
 				'Content-Type': 'application/json'
 			}
 		});
+		const resObj = await _f.json()
+		const { magnet } = resObj.data;
+		console.log(magnet);
+		chrome.storage.sync.get(['magnets'], (data) => {
+			data.magnets.push(magnet);
+			console.log(data);
+			chrome.storage.sync.set({magnets: data.magnets})
+		});
+		openViewer();
+		window.storage.dispatch({type: 'OFF_LOADING'})
+	} catch (error) {
+		console.error('popup.takeCaputre Error: ', error)
+	}
+}
+
+function openViewer() {
+	chrome.tabs.create({url: chrome.extension.getURL('/src/viewer.html')});
+}
+
+function download() {
+			/*
 		const _img = await _f.blob()
 		const outside = URL.createObjectURL(_img)
 		const _d = new Date().toDateString();
@@ -65,9 +86,7 @@ async function takeCapture(url, options = false) {
 			url: outside,
 			filename: "snapp_downloads/"+_d+"-snapp.capture.png"
 		});
+
 		URL.revokeObjectURL(url);
-		window.storage.dispatch({type: 'OFF_LOADING'})
-	} catch (error) {
-		console.error('popup.takeCaputre Error: ', error)
-	}
+		*/
 }

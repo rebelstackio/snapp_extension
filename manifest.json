@@ -3,18 +3,16 @@
 	"version": "1.0",
 	"description": "Take a snapshot, save it and seeded",
 	"permissions": [
-		"declarativeContent",
 		"storage",
 		"activeTab",
 		"http://localhost:8888/",
-		"downloads",
-		{"fileSystem": ["write", "retainEntries", "directory"]}
+		"downloads"
 	],
 	"background": {
 		"scripts": ["src/background.js"],
 		"persistent": false
 	},
-	"page_action": {
+	"browser_action": {
 		"default_popup": "src/popup.html"
 	},
 	"content_security_policy":"script-src 'self' https://apis.google.com; object-src 'self'",
