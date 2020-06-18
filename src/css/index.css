@@ -57,6 +57,21 @@ body {
 	left: 47px;
 }
 
+.img-box {
+	max-height: 90vh;
+	overflow: hidden;
+	position: relative;
+}
+
+.img-box > div {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	padding: 5px;
+	background: linear-gradient(180deg, black, rgba(0,0,0,.5));
+	padding: 5;
+}
+
 @keyframes dots {
 	0%, 20% {
 		color: rgba(0,0,0,0);
