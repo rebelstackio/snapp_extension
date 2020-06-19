@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	client = new WebTorrent();
 	chrome.storage.sync.get(['magnets'], (data) => {
 		const { magnets } = data;
+		console.log('start filling the view')
 		fillWithMagnets(magnets);
 	});
 })
@@ -19,6 +20,7 @@ async function fillWithMagnets(magnets) {
 		const file = await addTorrent(mg);
 		file.getBlobURL((error,blob) => {
 			if(error) throw error
+			console.log('file downloaded to blob url', blob)
 			appendImg(blob, mg);
 		})
 		
@@ -31,11 +33,13 @@ async function fillWithMagnets(magnets) {
  * @param {String} magnetID MagnetURL
  */
 function addTorrent(magnetID) {
+	console.log('start downloading')
 	return new Promise((resolve, reject) => {
 		try {
 			client.add(magnetID, (_t) => {
 				resolve(
 					_t.files.find(function (file) {
+						console.log('file downloaded: ', file.name)
 						return file.name.endsWith('.png')
 					})
 				)
@@ -60,6 +64,7 @@ function appendImg(urlBlob, magnet) {
 	]);
 	const body = document.querySelector('#main-view');
 	body.appendChild(box);
+	console.log('appended image to view')
 }
 /**
  * Copy the magnet url to the clipboard

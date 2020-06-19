@@ -1,4 +1,4 @@
-/* controllers/auth/index.js */
+/* controllers/snapp/index.js */
 'use strict';
 const RESPOND = global.E.Respond;
 const puppeteer = require('puppeteer');
@@ -11,23 +11,23 @@ const client = new wtorrent();
 const capture = function capture(req, res) {
 	const path = req.path;
 	const url = req.body.url;
+	// TODO: handle options
 	const opts = req.body.opts;
-
+	console.log('starting capture to: ', url)
 	takeScreenShot(url, (err,screenshot) => {
-		//console.log('screenshot', screenshot)
 		if(err) {
-			// TODO: handle errors
-			let wrapper = RESPOND.wrapSuccessData({
-				"message": "Capture take to " + url,
-			}, path, true);
-			return RESPOND.success(res, req, wrapper);
+			console.error(err);
+			return RESPOND.serverError(res, req, err);
 		} else {
 			const dir = saveToStampt(screenshot, url);
+			console.log('file saved to: ', dir);
 			seed(dir, (magnet) => {
+				console.log('seeding file to this magnet: ', magnet)
 				let wrapper = RESPOND.wrapSuccessData({
 					"message": "Capture take to " + url,
 					"magnet": magnet
 				}, path, true);
+				console.log('send the response to client')
 				return RESPOND.success(res, req, wrapper);
 			})
 		}
@@ -58,6 +58,7 @@ function crypt(string) {
  * @param {String} url URL from filesystem
  */
 function seed(url, callback) {
+	console.log('seeding')
 	client.seed(url, false, (t) => {
 		callback(t.magnetURI)
 	})
