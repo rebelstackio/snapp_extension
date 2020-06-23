@@ -5,6 +5,7 @@
 	"permissions": [
 		"storage",
 		"activeTab",
+		"tabs",
 		"http://localhost:8888/",
 		"downloads"
 	],

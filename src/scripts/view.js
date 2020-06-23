@@ -5,24 +5,37 @@ document.addEventListener('DOMContentLoaded', () => {
 	chrome.storage.sync.get(['magnets'], (data) => {
 		const { magnets } = data;
 		console.log('start filling the view')
+		console.log('#> magnets size ', magnets.length);
 		fillWithMagnets(magnets);
 	});
+	chrome.runtime.onMessage.addListener(onMessage);
 })
+/**
+ * handle message from new magnet if this tab is already open
+ * @param {*} message 
+ */
+function onMessage(message) {
+	console.log(message)
+	fillWithMagnets([message.newMagnet])
+}
 
 
 /**
- * 
+ * fill the view adding the magnets to webtorret
  * @param {Array} magnets 
  */
-async function fillWithMagnets(magnets) {
+function fillWithMagnets(magnets) {
 	const _body = document.querySelector('#main-view');
-	magnets.forEach(async (mg, i) => {
-		const file = await addTorrent(mg);
-		file.getBlobURL((error,blob) => {
-			if(error) throw error
-			console.log('file downloaded to blob url', blob)
-			appendImg(blob, mg);
-		})
+	magnets.forEach((mg, i) => {
+		console.log('manget n-', i)
+		addTorrent(mg, (err, res) => {
+			if(err) throw err;
+			res.file.getBlobURL((error,blob) => {
+				if(error) throw error
+				console.log('file downloaded to blob url', blob)
+				appendImg(blob, mg, res.peers);
+			})
+		});
 		
 	});
 }
@@ -32,34 +45,36 @@ async function fillWithMagnets(magnets) {
  * download, seed and append the image from magnet
  * @param {String} magnetID MagnetURL
  */
-function addTorrent(magnetID) {
+function addTorrent(magnetID, callback) {
 	console.log('start downloading')
-	return new Promise((resolve, reject) => {
-		try {
-			client.add(magnetID, (_t) => {
-				resolve(
-					_t.files.find(function (file) {
+	try {
+		client.add(magnetID, (_t) => {
+			callback(false,{
+				file: _t.files.find(function (file) {
 						console.log('file downloaded: ', file.name)
 						return file.name.endsWith('.png')
-					})
-				)
+					}
+				),
+				peers: _t.numPeers + 1 // +1 is this peer
 			})
-		} catch (error) {
-			reject(error)
-		}
-	})
+		})
+	} catch (error) {
+		callback(error)
+	}
 }
+
 /**
  * append the downloaded image
  * @param {String} urlBlob URLBLOB
  * @param {String} magnet MagnetURL
  */
-function appendImg(urlBlob, magnet) {
+function appendImg(urlBlob, magnet, peers) {
 	const box = Div({className: 'img-box'}, [
 		Img({ src: urlBlob }),
 		Div({}, [
 			Button({onclick: share(magnet)}, 'Share'),
-			Button({onclick: download(urlBlob)}, 'Download')
+			Button({onclick: download(urlBlob)}, 'Download'),
+			Span({}, `Seeding: ${peers} ${peers > 1 ? 'peers' : 'peer'}`)
 		])
 	]);
 	const body = document.querySelector('#main-view');

@@ -66,27 +66,30 @@ async function takeCapture(url, options = false) {
 			console.log(data);
 			chrome.storage.sync.set({magnets: data.magnets})
 		});
-		openViewer();
+		openViewer(magnet);
 		window.storage.dispatch({type: 'OFF_LOADING'})
 	} catch (error) {
 		console.error('popup.takeCaputre Error: ', error)
 	}
 }
-
-function openViewer() {
-	chrome.tabs.create({url: chrome.extension.getURL('/src/viewer.html')});
-}
-
-function download() {
-			/*
-		const _img = await _f.blob()
-		const outside = URL.createObjectURL(_img)
-		const _d = new Date().toDateString();
-		chrome.downloads.download({
-			url: outside,
-			filename: "snapp_downloads/"+_d+"-snapp.capture.png"
-		});
-
-		URL.revokeObjectURL(url);
-		*/
+/**
+ * open viewer tab if exits or create it
+ * @param {*} magnet new magnet (only when the tab is open to force download)
+ */
+function openViewer(magnet) {
+	//chrome-extension://hmalcmnfldipejchinnanmnhlhgcmhlp/src/viewer.html
+	chrome.tabs.getAllInWindow(null, (tabs) => {
+		let isFound = false;
+		for (var i = 0; i < tabs.length; i++) {
+			const tab = tabs[i];
+			if (tab?.title === 'Sanpps||Viewer') {
+				isFound = true;
+				chrome.tabs.update(tab.id, { active: true })
+				chrome.tabs.sendMessage(tab.id, { newMagnet: magnet })
+			}
+		}
+		if(!isFound) {
+			chrome.tabs.create({url: chrome.extension.getURL('/src/viewer.html')});
+		}
+	});
 }
