@@ -1,31 +1,44 @@
+let __USER;
+loading(true)
+
+chrome.storage.sync.get(['auth'], (data) => {
+	console.log(data);
+	__USER = data.auth;
+	loading()
+})
+
+/**
+ * Main action button (capture)
+ */
 const ActionBTN = Button({
 	className: 'action-btn',
 	onclick: () => {
 		chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
 			let url = tabs[0].url;
 			console.log(url);
-			takeCapture(url)
+			takeCapture(url, false, __USER)
 		});
 	}
 }, 'Capture');
-
-function Input(props = {}, content = false) {
-	if (content) props.content = content;
-	return HTMLElementCreator('input', props)
-}
-
+/**
+ * on loading event
+ */
 ActionBTN.onStoreEvent('ON_LOADING', (state, el) => {
 	el.setAttributes({disabled: ''})
 	el.classList.add('loading');
 	el.innerHTML = ''
 });
-
+/**
+ * off loading event
+ */
 ActionBTN.onStoreEvent('OFF_LOADING', (state, el) => {
 	el.removeAttribute('disabled')
 	el.innerHTML = 'Capture';
 	el.classList.remove('loading');
 });
-
+/**
+ * Options box
+ */
 const OPTS = Div({className: 'opt-box'},[
 	Label({attributes: {for: 'secs'}}, 'Wait Time in Secconds'),
 	Input({attributes: {name: 'secs', placeholder: 'secs', value: '0'}})
@@ -42,17 +55,17 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 /**
- * 
+ * call capture server api
  * @param {String} url url you want to fetch (default the tab you're)
  * @param {*} options 
  */
-async function takeCapture(url, options = false) {
+async function takeCapture(url, options = false, user) {
 	try {
-		window.storage.dispatch({type: 'ON_LOADING'})
+		loading(true)
 		// TODO: set server url as env variable
 		const _f = await fetch('http://localhost:8888/api/v1/capture',{
 			method: 'POST',
-			body: JSON.stringify({url,options}),
+			body: JSON.stringify({url,options, user}),
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
@@ -67,7 +80,7 @@ async function takeCapture(url, options = false) {
 			chrome.storage.sync.set({magnets: data.magnets})
 		});
 		openViewer(magnet);
-		window.storage.dispatch({type: 'OFF_LOADING'})
+		loading();
 	} catch (error) {
 		console.error('popup.takeCaputre Error: ', error)
 	}
@@ -92,4 +105,12 @@ function openViewer(magnet) {
 			chrome.tabs.create({url: chrome.extension.getURL('/src/viewer.html')});
 		}
 	});
+}
+
+/**
+ * Loading state 
+ * @param {Boolean} isLoading 
+ */
+function loading(isLoading = false) {
+	window.storage.dispatch({type: isLoading ? 'ON_LOADING' : 'OFF_LOADING'})
 }

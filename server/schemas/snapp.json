@@ -15,9 +15,13 @@
 					"opts": {
 						"title": "Options",
 						"type": "object"
+					},
+					"user": {
+						"titile": "User",
+						"typpe": "object"
 					}
 				},
-				"required": ["url"]
+				"required": ["url", "user"]
 			}
 		},
 		"required": [

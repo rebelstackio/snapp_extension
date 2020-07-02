@@ -11,6 +11,8 @@ const client = new wtorrent();
 const capture = function capture(req, res) {
 	const path = req.path;
 	const url = req.body.url;
+	const user = req.body.user;
+	console.log('**> user: ', user.id);
 	// TODO: handle options
 	const opts = req.body.opts;
 	console.log('starting capture to: ', url)
@@ -19,7 +21,7 @@ const capture = function capture(req, res) {
 			console.error(err);
 			return RESPOND.serverError(res, req, err);
 		} else {
-			const dir = saveToStampt(screenshot, url);
+			const dir = saveFile(screenshot, url, user);
 			console.log('file saved to: ', dir);
 			seed(dir, (magnet) => {
 				console.log('seeding file to this magnet: ', magnet)
@@ -40,9 +42,17 @@ const capture = function capture(req, res) {
  * @param {Buffer} buffer img buffer
  * @param {String} url URL from
  */
-function saveToStampt(buffer, url) {
+function saveFile(buffer, url, user) {
+	const _bdir = global._baseDir + '/snapps/';
+	const _udir = `${_bdir}${user.id}-${Buffer.from(user.email).toString('base64')}/`;
 	let fileName = crypt(Date.now() + url) + '.png';
-	const dir = global._baseDir + '/snapps/' + fileName;
+	const dir = _udir + fileName;
+	if (!fs.existsSync(_bdir)) {
+		fs.mkdirSync(_bdir)
+	}
+	if(!fs.existsSync(_udir)) {
+		fs.mkdirSync(_udir);
+	}
 	fs.writeFileSync(dir,buffer, 'buffer');
 	return dir;
 }
