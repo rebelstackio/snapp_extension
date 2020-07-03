@@ -74,7 +74,8 @@ function appendImg(urlBlob, magnet, peers) {
 		Div({}, [
 			Button({onclick: share(magnet)}, 'Share'),
 			Button({onclick: download(urlBlob)}, 'Download'),
-			Span({}, `Seeding: ${peers} ${peers > 1 ? 'peers' : 'peer'}`)
+			Span({}, `Seeding: ${peers} ${peers > 1 ? 'peers' : 'peer'}`),
+			IconButton({onclick: expandImg(urlBlob)}, 'src/img/icons/expand.svg')
 		])
 	]);
 	const body = document.querySelector('#main-view');
@@ -107,4 +108,25 @@ function download(urlBlob) {
 			filename: "snapp_downloads/"+_d+"-snapp.capture.png"
 		});
 	}
+}
+
+function expandImg(urlBlob) {
+	return (ev) => {
+		const imgToExpand = document.querySelector(`img[src="${urlBlob}"`);
+		const parentEl = imgToExpand.parentElement;
+		const btnState = parentEl.classList.toggle('expanded');
+		console.log(ev.target)
+		const btnIcon = (ev.target instanceof HTMLImageElement)
+			? ev.target
+			: ev.target.firstElementChild;
+		btnIcon.src = chrome.runtime.getURL(`src/img/icons/${btnState ? 'compress' : 'expand'}.svg`)
+	}
+}
+
+/** helper components */
+function IconButton(props, url) {
+	props = Object.assign({}, props, { classList: ['incon-btn'] });
+	if (!url) return Button(props)
+	url = chrome.runtime.getURL(url);
+	return Button( props, Img({src: url, className: 'icon-sm'}) )
 }

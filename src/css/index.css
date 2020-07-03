@@ -64,6 +64,8 @@ button:hover {
 	max-height: 90vh;
 	overflow: hidden;
 	position: relative;
+	display: grid;
+	place-content: start center;
 }
 
 .img-box > div {
@@ -71,12 +73,39 @@ button:hover {
 	bottom: 0px;
 	width: 100%;
 	padding: 5px;
-	background: linear-gradient(180deg, black, rgba(0,0,0,.5));
+	background: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.5));
 	display: grid;
-	grid-template-columns: auto auto auto;
+	grid-auto-flow: column;
 	column-gap: 5px;
 	color: #fff;
 	align-items: center;
+}
+
+.icon-sm {
+	width: 30px;
+	height: 30px;
+}
+
+
+button.incon-btn {
+    background: transparent;
+    border: none;
+    transition: all .3s ease;
+    width: fit-content;
+    place-self: center end;
+}
+
+.img-box.expanded {
+	max-height: unset;
+}
+
+
+.header {
+    background-color: #ea791b;
+    padding: 10px 15px;
+    color: #fff;
+    margin: 0;
+    margin-bottom: 5px;
 }
 
 @keyframes dots {
