@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		fillWithMagnets(magnets);
 	});
 	chrome.runtime.onMessage.addListener(onMessage);
+	handleSharedLing();
 })
 /**
  * handle message from new magnet if this tab is already open
@@ -18,6 +19,25 @@ function onMessage(message) {
 	console.log(message)
 	fillWithMagnets([message.newMagnet])
 }
+/**
+ * handle input shared link
+ */
+function handleSharedLing() {
+	const _input = document.querySelector('.header > input');
+	_input.addEventListener('keydown', (ev) => {
+		if(ev.key === 'Enter') {
+			if (_input.value !== ''){
+				fillWithMagnets([_input.value]);
+				chrome.storage.sync.get(['magnets'], (data) => {
+					const {magnets} = data
+					magnets.push(_input.value);
+					_input.value = '';
+					chrome.storage.sync.set({magnets})
+				})
+			}
+		}
+	})
+}
 
 
 /**
@@ -26,8 +46,8 @@ function onMessage(message) {
  */
 function fillWithMagnets(magnets) {
 	const _body = document.querySelector('#main-view');
-	magnets.forEach((mg, i) => {
-		console.log('manget n-', i)
+	magnets.forEach((mg) => {
+		console.log('#> manget: ', mg)
 		addTorrent(mg, (err, res) => {
 			if(err) throw err;
 			res.file.getBlobURL((error,blob) => {
@@ -71,11 +91,13 @@ function addTorrent(magnetID, callback) {
 function appendImg(urlBlob, magnet, peers) {
 	const box = Div({className: 'img-box'}, [
 		Img({ src: urlBlob }),
+		Div({className: 'expand-area', onclick: expandImg(urlBlob)},
+			IconButton({}, 'src/img/icons/expand.svg')
+		),
 		Div({}, [
 			Button({onclick: share(magnet)}, 'Share'),
 			Button({onclick: download(urlBlob)}, 'Download'),
-			Span({}, `Seeding: ${peers} ${peers > 1 ? 'peers' : 'peer'}`),
-			IconButton({onclick: expandImg(urlBlob)}, 'src/img/icons/expand.svg')
+			Span({}, `Seeding: ${peers} ${peers > 1 ? 'peers' : 'peer'}`)
 		])
 	]);
 	const body = document.querySelector('#main-view');
