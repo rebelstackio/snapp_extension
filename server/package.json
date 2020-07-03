@@ -1,13 +1,42 @@
 {
 	"name": "snapp_server",
 	"version": "1.0.0",
-	"description": "take a snapshot of a site",
+	"description": "Take snapshots with puppeteer",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node index.js"
+		"start": "NODE_PATH=. node index.js",
+		"debug": "NODE_PATH=. node --inspect-brk=0.0.0.0:9229 server.js",
+		"test": "nyc --reporter=lcov --reporter=text-lcov ./node_modules/.bin/mocha test",
+		"coverage": "nyc report"
 	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rebelstackio/snapp_extension.git"
+	},
+	"keywords": [
+		"rest",
+		"snapp",
+		"capture",
+		"screenshot"
+	],
+	"author": "osmareyesst@gmail.com",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/rebelstackio/snapp_extension/issues"
+	},
+	"homepage": "https://github.com/rebelstackio/snapp_extension#readme",
 	"dependencies": {
-		"puppeteer": "^3.1.0"
+		"@rebelstack-io/expressif": "^3.4.2",
+		"app-module-path": "^2.2.0",
+		"dotenv": "^8.2.0",
+		"puppeteer": "^3.2.0",
+		"webtorrent-hybrid": "^4.0.1"
+	},
+	"devDependencies": {
+		"chai": "^4.2.0",
+		"mocha": "^7.2.0",
+		"nyc": "^15.0.1",
+		"sinon": "^9.0.2",
+		"sinon-chai": "^3.5.0"
 	}
 }
